@@ -21,6 +21,7 @@ jobs:
         inlineScript: |
           #!/bin/bash
           az group create --name aks-qrbvt-rg --location westeurope
+          az deployment group create -g aks-qrbvt-rg --template-file ./bicep/aks-deploy.bicep
           
       # Deploy Bicep file
     - name: deploy
