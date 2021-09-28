@@ -12,22 +12,12 @@ jobs:
     - uses: azure/login@v1
       with:
         creds: ${{ secrets.AZURE_CREDENTIALS }}
-
-    - run: az account list -o table
-    - run: az group list -o table
-
-    - uses: Azure/CLI@v1
-      with:
-        inlineScript: |
-          #!/bin/bash
-          az group create --name aks-qrbvt-rg --location westeurope
-          az deployment group create -g aks-qrbvt-rg --template-file ./bicep/aks-deploy.bicep
           
       # Deploy Bicep file
     - name: deploy
       uses: azure/arm-deploy@v1
       with:
-        resourceGroupName: /subscriptions/808121c2-95b0-4e15-8dbc-cb6de76a956a/resourceGroups/aks-qrbvt-rg
+        resourceGroupName: ${{ secrets.AZURE_RG }}
         template: ./bicep/aks-deploy.bicep
         parameters: name=gatest
         failOnStdErr: false
