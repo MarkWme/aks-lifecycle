@@ -15,7 +15,13 @@ jobs:
 
     - run: az account list -o table
     - run: az group list -o table
-    
+
+    - uses: Azure/CLI@v1
+      with:
+        inlineScript: |
+          #!/bin/bash
+          az group create --name aks-qrbvt-rg --location westeurope
+          
       # Deploy Bicep file
     - name: deploy
       uses: azure/arm-deploy@v1
