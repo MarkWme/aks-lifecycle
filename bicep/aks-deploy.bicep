@@ -5,10 +5,10 @@
 param location string = resourceGroup().location
 
 @description('The slug to be used as part of the resource names')
-param name string = 'aks-dyn'
+param name string = 'aks'
 
 @description('The DNS prefix for the API server')
-param dnsPrefix string = 'aks-dyn'
+param dnsPrefix string = name
 
 @minValue(1)
 @maxValue(10)
