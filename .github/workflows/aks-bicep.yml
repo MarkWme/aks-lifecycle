@@ -7,8 +7,6 @@ jobs:
 
       # Checkout code
     - uses: actions/checkout@main
-      
-    - run: echo ${{ secrets.AZURE_RG }}
 
       # Log into Azure
     - uses: azure/login@v1
@@ -21,7 +19,7 @@ jobs:
       uses: azure/arm-deploy@v1
       with:
         subscriptionId: ${{ secrets.AZURE_SUBSCRIPTION }}
-        resourceGroupName: ${{ secrets.AZURE_RG }}
+        resourceGroupName: /subscriptions/808121c2-95b0-4e15-8dbc-cb6de76a956a/resourceGroups/aks-qrbvt-rg
         template: ./bicep/aks-deploy.bicep
         parameters: name=gatest
         failOnStdErr: false
