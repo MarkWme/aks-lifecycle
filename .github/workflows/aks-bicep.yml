@@ -20,7 +20,6 @@ jobs:
     - name: deploy
       uses: azure/arm-deploy@v1
       with:
-        subscriptionId: ${{ secrets.AZURE_SUBSCRIPTION }}
         resourceGroupName: /subscriptions/808121c2-95b0-4e15-8dbc-cb6de76a956a/resourceGroups/aks-qrbvt-rg
         template: ./bicep/aks-deploy.bicep
         parameters: name=gatest
