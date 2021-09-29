@@ -1,0 +1,44 @@
+#
+# Setup environment for demonstrating canary deployments
+# using nginx canary annotations.
+#
+trigger: none
+
+resources:
+- repo: self
+
+variables:
+- group: cyan
+- name: vmImageName
+  value: 'ubuntu-latest'
+  
+stages:
+- stage: Deploy
+  displayName: Deploy to Canary
+
+  jobs:
+  - job: Deploy
+    displayName: Deploy
+    pool:
+      vmImage: $(vmImageName)
+    steps:
+    - checkout: self
+    - task: HelmInstaller@1
+      inputs:
+        helmVersionToInstall: 'latest'
+    - task: AzureCLI@2
+      inputs:
+        azureSubscription: 'AzureServiceConnection'
+        scriptType: 'bash'
+        scriptLocation: 'inlineScript'
+        inlineScript: |
+          set -x
+          az aks get-credentials -g $AKS_RESOURCE_GROUP -n $AKS_NAME
+          #
+          # Deploy server applications to blue / green environments
+          #
+          helm install -n $DEPLOYMENT_NAME ${DEPLOYMENT_NAME}-api-server deploy/charts/server-canary --set blue.tag=$PRODUCTION_TAG,green.tag=$CANARY_TAG,ingress.hostName=$API_SERVER,productionSlot=blue,image.repository=${ACR_NAME}.azurecr.io/simpleapi
+          #
+          # Deploy client applications to blue / green deployments
+          #
+          helm install -n $DEPLOYMENT_NAME ${DEPLOYMENT_NAME}-client-go-production deploy/charts/client-go --set apiServerURL=http://$API_SERVER,image.repository=${ACR_NAME}.azurecr.io/clientgo

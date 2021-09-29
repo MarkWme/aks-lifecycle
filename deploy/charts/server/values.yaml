@@ -1,0 +1,32 @@
+replicaCount: 10
+
+productionSlot: blue
+
+blue:
+  enabled: true
+  tag: latest
+
+green:
+  enabled: true
+  tag: latest
+
+image:
+  repository: pcreuwcore.azurecr.io/simpleapi
+  pullPolicy: Always
+
+serviceAccount:
+  create: true
+  name:
+
+service:
+  type: ClusterIP
+  port: 3000
+
+ingress:
+  type: agic
+  hostName: 51.105.210.199.nip.io
+       
+  hosts:
+    - backend:
+        serviceName: simple-api-server
+        servicePort: 3000
