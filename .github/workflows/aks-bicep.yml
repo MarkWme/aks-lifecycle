@@ -17,7 +17,8 @@ jobs:
     - name: deploy
       uses: azure/arm-deploy@v1
       with:
+        deploymentName: ${{ github.run_number }}
         resourceGroupName: ${{ secrets.AZURE_RG }}
         template: ./bicep/aks-deploy.bicep
-        parameters: name=gatest
+        parameters: name=aks-${{ secrets.RANDOM_SUFFIX }}
         failOnStdErr: false
