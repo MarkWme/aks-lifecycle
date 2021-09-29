@@ -21,3 +21,4 @@ azureCredentials=$(az ad sp create-for-rbac --name ${name}-spn --role contributo
 gh secret set AZURE_CREDENTIALS -r aks-lifecycle -b $azureCredentials 
 gh secret set AZURE_RG -r aks-lifecycle -b ${name}-rg
 gh secret set AZURE_SUBSCRIPTION -r aks-lifecycle -b $subscriptionId
+gh secret set RANDOM_SUFFIX -r aks-lifecycle -b $randomSuffix

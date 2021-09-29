@@ -31,13 +31,10 @@ var virtualNetworkName = '${name}-vnet'
 var addressPrefix = '10.${virtualNetworkNumber}.0.0/16'
 var aksNodeSubnetName = '${name}-node-subnet'
 var aksNodeSubnetPrefix = '10.${virtualNetworkNumber}.1.0/24'
-var aksNodeSubnetId = '${aks_vnet.id}/subnets/${aksNodeSubnetName}'
 var aksPodSubnetName = '${name}-pod-subnet'
 var aksPodSubnetPrefix = '10.${virtualNetworkNumber}.2.0/24'
-var aksPodSubnetId = '${aks_vnet.id}/subnets/${aksPodSubnetName}'
 var agicSubnetName = '${name}-agic-subnet'
 var agicSubnetPrefix = '10.${virtualNetworkNumber}.3.0/24'
-var agicSubnetId = '${aks_vnet.id}/subnets/${agicSubnetName}'
 var aksIdentityName = '${name}-identity'
 var aksIdentityId = '${aks_identity.id}'
 
@@ -49,42 +46,6 @@ resource aks_identity 'Microsoft.ManagedIdentity/userAssignedIdentities@2018-11-
   name: aksIdentityName
   location: location
 
-}
-
-//
-// Create an Azure virtual network
-//
-
-resource aks_vnet 'Microsoft.Network/virtualNetworks@2021-02-01' = {
-  name: virtualNetworkName
-  location: location
-  properties: {
-    addressSpace: {
-      addressPrefixes: [
-        addressPrefix
-      ]
-    }
-    subnets: [
-      {
-        name: aksNodeSubnetName
-        properties: {
-          addressPrefix: aksNodeSubnetPrefix
-        }
-      }
-      {
-        name: aksPodSubnetName
-        properties: {
-          addressPrefix: aksPodSubnetPrefix
-        }
-      }
-      {
-        name: agicSubnetName
-        properties: {
-          addressPrefix: agicSubnetPrefix
-        }
-      }
-    ]
-  }
 }
 
 resource aks_cluster 'Microsoft.ContainerService/managedClusters@2021-03-01'=  {
